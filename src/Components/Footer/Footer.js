@@ -14,7 +14,7 @@ const Footer = () => {
 				Manchester city 2019. All rights reserved
 			</div>
 		</footer>
-	);
-};
+	)
+}
 
 export default Footer;
