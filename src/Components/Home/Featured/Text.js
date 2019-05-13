@@ -106,8 +106,8 @@ export default class Text extends Component {
 						className='featured_player'
 						style={{
 							opacity,
+							transform: `translate(550px, 201px)`,
 							background: `url(${Player})`,
-							transform: `transform(550px, 201px)`
 						}}>
 					</div>
 				)
