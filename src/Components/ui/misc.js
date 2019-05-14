@@ -12,7 +12,6 @@ export const Tag = (props) => {
 			display: 'inline-block',
 			fontFamily: 'Righteous',
 			...props.add,
-
 		}}>{props.children}</div>
 	if (props.link) {
 		return (
@@ -26,8 +25,6 @@ export const Tag = (props) => {
 	}
 };
 
-
-
 export const firebaseLooper = (snapshot) => {
 	const data = [];
 	snapshot.forEach(element => {
@@ -35,7 +32,6 @@ export const firebaseLooper = (snapshot) => {
 			...element.val(),
 			id: element.key
 		})
-
 	});
 	return data;
 }
@@ -46,4 +42,20 @@ export const reverseArray = (actualArray) => {
 		reversedArray.push(actualArray[i])
 	}
 	return reversedArray;
+}
+
+export const validate = (element) => {
+	let error = [true, ''];
+	if (element.validation.email) {
+		const valid = /\S+@\S+\.\S+/.test(element.value);
+		const message = `${!valid ? 'Must be a valid email' : ''}`;
+		error = !valid ? [valid, message] : error;
+	}
+
+	if (element.validation.required) {
+		const valid = element.value.trim() !== '';
+		const message = `${!valid ? 'This field is required' : ''}`;
+		error = !valid ? [valid, message] : error;
+	}
+	return error;
 }

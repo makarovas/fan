@@ -1,5 +1,7 @@
 import React from 'react';
 import PromotionAnimation from './PromotionAnimation';
+import Enroll from './Enroll';
+
 const Promotion = () => {
 	return (
 		<div
@@ -8,13 +10,11 @@ const Promotion = () => {
 				background: '#ffffff',
 			}}>
 			<div className="container">
-				<PromotionAnimation>
-
-				</PromotionAnimation>
+				<PromotionAnimation />
+				<Enroll />
 			</div>
 		</div>
 	)
-
 };
 
 export default Promotion;
