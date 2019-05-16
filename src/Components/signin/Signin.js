@@ -3,7 +3,7 @@ import FormField from '../ui/formField';
 import { validate } from '../ui/misc';
 import { firebase } from './../../firebase.js';
 
-export default class extends Component {
+export default class SignIn extends Component {
 	state = {
 		formError: false,
 		formSucces: '',
