@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { database } from 'firebase';
 
 export const Tag = (props) => {
 	const template = <div

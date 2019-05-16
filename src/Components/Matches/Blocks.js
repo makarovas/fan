@@ -10,12 +10,15 @@ export default class Blocks extends Component {
 	}
 
 	componentDidMount() {
-		firebaseMatches.limitToLast(6).once('value').then((snapshot) => {
-			const matches = firebaseLooper(snapshot);
-			this.setState({
-				matches: reverseArray(matches)
+		firebaseMatches
+			.limitToLast(6)
+			.once('value')
+			.then((snapshot) => {
+				const matches = firebaseLooper(snapshot);
+				this.setState({
+					matches: reverseArray(matches)
+				})
 			})
-		})
 	}
 	showMatches = (matches) => (
 		matches ?

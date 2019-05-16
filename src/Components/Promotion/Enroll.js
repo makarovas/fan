@@ -36,8 +36,6 @@ export default class Enroll extends Component {
 		}
 
 		if (formIsValid) {
-			// this.resetFormSuccess();
-
 			firebasePromotions
 				.orderByChild('email')
 				.equalTo(dataToSubmit.email)
