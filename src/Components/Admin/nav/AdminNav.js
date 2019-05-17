@@ -45,7 +45,7 @@ const AdminNav = () => {
       .auth()
       .signOut()
       .then(() => {
-        console.log('log out succesfull')
+        console.log('log out successful')
       }, (error) => {
         console.log('Error loging out')
       })

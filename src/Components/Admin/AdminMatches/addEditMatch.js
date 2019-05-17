@@ -202,7 +202,7 @@ export default class AddEditMatch extends Component {
 			matchId,
 			formType: type,
 			formdata: newFormdata,
-			// teams: teams
+			teams
 		})
 
 	}
@@ -226,6 +226,7 @@ export default class AddEditMatch extends Component {
 		}
 
 		if (!matchId) {
+
 		} else {
 			firebaseDB
 				.ref(`matches/${matchId}`)
@@ -236,6 +237,55 @@ export default class AddEditMatch extends Component {
 				})
 		}
 	}
+
+	successForm = (message) => {
+		this.setState({
+			formSuccess: message
+		});
+		setTimeout(() => {
+			this.setState({
+				formSuccess: ' '
+			})
+		}, 2000);
+	}
+
+	submitForm = (event) => {
+		event.preventDefault();
+		let dataToSubmit = {};
+		let formIsValid = true;
+		for (let key in this.state.formdata) {
+			dataToSubmit[key] = this.state.formdata[key].value;
+			formIsValid = this.state.formdata[key].valid && formIsValid;
+		}
+		this.state.teams.forEach((team) => {
+			if (team.shortName === dataToSubmit.local) {
+				dataToSubmit['localThnmb'] = team.thmb
+			}
+			if (team.shortName === dataToSubmit.away) {
+				dataToSubmit['awayThnmb'] = team.thmb
+			}
+		})
+		if (formIsValid) {
+			if (this.state.formType === 'Edit Match') {
+				firebaseDB.ref(`matches/${this.state.matchId}`)
+					.update(dataToSubmit)
+					.then(() => {
+						this.successForm('Updated correctly');
+					}).catch((e) => {
+						this.setState({
+							formError: true
+						})
+					})
+			} else {
+				///
+			}
+		} else {
+			this.setState({
+				formError: true
+			})
+		}
+	}
+
 	render() {
 		return (
 			<AdminLayout>
@@ -265,7 +315,6 @@ export default class AddEditMatch extends Component {
 						</div>
 					</div>
 				</div>
-
 				<div className="select_team_layout">
 					<div className="label_inputs">	Away</div>
 					<div className="wrapper">
