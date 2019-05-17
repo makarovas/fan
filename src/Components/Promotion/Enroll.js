@@ -6,7 +6,7 @@ import { firebasePromotions } from './../../firebase';
 export default class Enroll extends Component {
 	state = {
 		formError: false,
-		formSucces: '',
+		formSuccess: '',
 		formdata: {
 			email: {
 				element: 'input',
@@ -64,7 +64,7 @@ export default class Enroll extends Component {
 		newElement.validationMessage = validData[1];
 		newFormdata[element.id] = newElement;
 		this.setState({
-			fomrError: false,
+			formError: false,
 			formdata: newFormdata
 		})
 	}
@@ -79,15 +79,15 @@ export default class Enroll extends Component {
 		this.setState({
 			formError: false,
 			formdata: newFormdata,
-			formSucces: type ? 'Congrutalations' : 'Already on the database'
+			formSuccess: type ? 'Congratulations' : 'Already on the database'
 		})
-		this.succesMessage();
+		this.successMessage();
 	}
 
-	succesMessage = () => {
+	successMessage = () => {
 		setTimeout(() => {
 			this.setState({
-				formSucces: ''
+				formSuccess: ''
 			})
 		}, 2000);
 	}
@@ -111,7 +111,7 @@ export default class Enroll extends Component {
 								<div className='error_label'>Something is wrong, try again</div> :
 								null}
 							<div className='success_label'>
-								{this.state.formSucces}
+								{this.state.formSuccess}
 							</div>
 							<button
 								onClick={(event) => this.submitForm(event)}>

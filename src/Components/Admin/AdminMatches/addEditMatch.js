@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import AdminLayout from './../../HOC/AdminLayout';
 import FormField from './../../ui/formField';
 import { validate } from './../../ui/misc';
-
+import { firebaseTeams, firebaseDB, firebaseMatches } from './../../../firebase';
+import { firebaseLooper } from './../../ui/misc';
 export default class AddEditMatch extends Component {
 	state = {
 		matchId: '',
@@ -125,6 +126,114 @@ export default class AddEditMatch extends Component {
 				validationMessage: '',
 				showlabel: true
 			},
+			result: {
+				element: 'select',
+				value: '',
+				config: {
+					label: 'Team result',
+					name: 'select_result',
+					type: 'select',
+					options: [
+						{ key: 'W', value: 'Win' },
+						{ key: 'L', value: 'Lose' },
+						{ key: 'D', value: 'Draw' },
+						{ key: 'N/A', value: 'Not available' },
+					]
+				},
+				validation: {
+					required: true
+
+				},
+				valid: false,
+				validationMessage: '',
+				showlabel: true
+			},
+			final: {
+				element: 'select',
+				value: '',
+				config: {
+					label: 'Game played?',
+					name: 'select_result',
+					type: 'select',
+					options: [
+						{ key: 'Yes', value: 'Yes' },
+						{ key: 'No', value: 'No' },
+
+					]
+				},
+				validation: {
+					required: true
+				},
+				valid: false,
+				validationMessage: '',
+				showlabel: true
+			},
+		}
+	}
+	updateForm = (element) => {
+		const newFormdata = { ...this.state.formdata }
+		const newElement = { ...newFormdata[element.id] }
+		newElement.value = element.event.target.value;
+		let validData = validate(newElement);
+		newElement.valid = validData[0];
+		newElement.validationMessage = validData[1];
+		newFormdata[element.id] = newElement;
+		this.setState({
+			formError: false,
+			formdata: newFormdata
+		})
+	}
+
+	updateFields = (match, teamOptions, teams, type, matchId) => {
+		const newFormdata = {
+			...this.state.formdata
+		}
+		for (let key in newFormdata) {
+			if (match) {
+				newFormdata[key].value = match[key];
+				newFormdata[key].valid = true;
+
+			}
+			if (key === 'local' || key === 'away') {
+				newFormdata[key].config.options = teamOptions
+			}
+		}
+		this.setState({
+			matchId,
+			formType: type,
+			formdata: newFormdata,
+			// teams: teams
+		})
+
+	}
+
+
+	componentDidMount() {
+		const matchId = this.props.match.params.id;
+		const getTeams = (match, type) => {
+			firebaseTeams.once('value')
+				.then(snapshot => {
+					const teams = firebaseLooper(snapshot);
+					const teamOptions = [];
+					snapshot.forEach((childSnapshot) => {
+						teamOptions.push({
+							key: childSnapshot.val().shortName,
+							value: childSnapshot.val().shortName
+						})
+					})
+					this.updateFields(match, teamOptions, teams, type, matchId);
+				})
+		}
+
+		if (!matchId) {
+		} else {
+			firebaseDB
+				.ref(`matches/${matchId}`)
+				.once('value')
+				.then((snapshot) => {
+					const match = snapshot.val();
+					getTeams(match, 'Edit Match');
+				})
 		}
 	}
 	render() {
@@ -140,7 +249,6 @@ export default class AddEditMatch extends Component {
 					id='date'
 					formdata={this.state.formdata.date}
 					change={(element) => this.updateForm(element)} />
-
 				<div className="select_team_layout">
 					<div className="label_inputs">	Local</div>
 					<div className="wrapper">
@@ -151,7 +259,7 @@ export default class AddEditMatch extends Component {
 								change={(element) => this.updateForm(element)} /></div>
 						<div>
 							<FormField
-								id='reusltLocal'
+								id='resultLocal'
 								formdata={this.state.formdata.resultLocal}
 								change={(element) => this.updateForm(element)} />
 						</div>
@@ -168,13 +276,41 @@ export default class AddEditMatch extends Component {
 								change={(element) => this.updateForm(element)} /></div>
 						<div>
 							<FormField
-								id='reusltAway'
+								id='resultAway'
 								formdata={this.state.formdata.resultAway}
 								change={(element) => this.updateForm(element)} />
 						</div>
 					</div>
 				</div>
-
+				<div className="split_fields">
+					<FormField
+						id='referee'
+						formdata={this.state.formdata.referee}
+						change={(element) => this.updateForm(element)} />
+					<FormField
+						id='stadium'
+						formdata={this.state.formdata.stadium}
+						change={(element) => this.updateForm(element)} />
+				</div>
+				<div className="split_fields last">
+					<FormField
+						id='result'
+						formdata={this.state.formdata.result}
+						change={(element) => this.updateForm(element)} />
+					<FormField
+						id='final'
+						formdata={this.state.formdata.final}
+						change={(element) => this.updateForm(element)} />
+				</div>
+				<div className="success_label">{this.state.formSuccess}</div>
+				{this.state.formError ?
+					<div className='error_label'>Something is wrong</div>
+					: null}
+				<div className="admin_submit">
+					<button onClick={(event) => this.submitForm(event)}>
+						{this.state.formType}
+					</button>
+				</div>
 			</AdminLayout>
 		)
 	}

@@ -50,7 +50,7 @@ export default class SignIn extends Component {
 		newElement.validationMessage = validData[1];
 		newFormdata[element.id] = newElement;
 		this.setState({
-			fomrError: false,
+			formError: false,
 			formdata: newFormdata
 		})
 	}
