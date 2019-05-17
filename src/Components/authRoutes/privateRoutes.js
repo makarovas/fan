@@ -10,10 +10,7 @@ const PrivateRoutes = ({
 			user
 				? <Comp {...props} user={user} />
 				: <Redirect to='/sign_in' />
-		)}>
-
-		</Route>
-
+		)} />
 	);
 };
 
