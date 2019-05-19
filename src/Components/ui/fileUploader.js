@@ -24,9 +24,6 @@ export default class Fileuploader extends Component {
 	}
 
 	handleUploadSuccess = (filename) => {
-
-		console.log(filename)
-
 		this.setState({
 			name: filename,
 			isUploading: false
@@ -77,7 +74,6 @@ export default class Fileuploader extends Component {
 							onUploadStart={this.handleUploadStart}
 							onUploadError={this.handleUploadError}
 							onUploadSuccess={this.handleUploadSuccess}
-						// onProgress={this.handleUploadProgress}
 						/>
 					</div>
 					: null}
@@ -102,7 +98,7 @@ export default class Fileuploader extends Component {
 									width: '100%'
 								}}
 								src={this.state.fileURL}
-								alt={`${this.state.name}`} />
+								alt={this.state.name} />
 							<div className="remove" onClick={() => this.uploadAgain()}>
 								Remove</div>
 

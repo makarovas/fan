@@ -10,12 +10,22 @@ import AdminMatches from './Components/Admin/AdminMatches/AdminMatches';
 import AddEditMatch from './Components/Admin/AdminMatches/addEditMatch';
 import AdminPlayers from './Components/Admin/players/AdminPlayers';
 import AddEditPlayers from './Components/Admin/players/AddEditPlayers';
+import TheTeam from './Components/TheTeam/TheTeam'
+
 const Routes = (props) => {
 	return (
 		<Layout>
 			<Switch>
-				<PublicRoutes {...props} restricted={false} exact component={Home} path='/' />
-				<PublicRoutes {...props} restricted={true} exact component={SignIn} path='/sign_in' />
+				<PublicRoutes
+					{...props} restricted={false}
+					exact component={Home} path='/' />
+				<PublicRoutes
+					{...props} restricted={true}
+					exact component={SignIn} path='/sign_in' />
+				<PublicRoutes
+					{...props}
+					// restricted={true}
+					exact component={TheTeam} path='/the_team' />
 				<PrivateRoutes
 					{...props} exact
 					component={Dashboard}
