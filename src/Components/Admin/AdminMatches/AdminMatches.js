@@ -76,7 +76,15 @@ export default class AdminMatches extends Component {
 				</div>
 				<div className='admin_progess'>
 					{this.state.isloading
-						? <CircularProgress thickness={7} style={{ color: '#98c5e9' }} />
+						? <div
+							className='progress'
+							style={{
+								textAlign: 'center',
+								margin: '30px 0'
+							}}	>
+							<CircularProgress thickness={7} style={{ color: '#98c5e9' }} size={70} />
+						</div>
+
 						: null}
 				</div>
 			</AdminLayout >

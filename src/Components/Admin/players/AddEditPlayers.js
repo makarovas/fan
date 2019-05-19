@@ -4,7 +4,7 @@ import FormField from './../../ui/formField';
 import { validate } from './../../ui/misc';
 import { firebasePlayers, firebaseDB, firebase } from './../../../firebase';
 import Fileuploader from './../../ui/fileUploader';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 export default class AddEditPlayers extends Component {
 	state = {
 		playerId: '',
