@@ -8,7 +8,7 @@ export default class Fileuploader extends Component {
 	state = {
 		name: '',
 		isUploading: false,
-		fileURL: '',
+		fileURL: ''
 	}
 
 	handleUploadStart = () => {
@@ -17,34 +17,32 @@ export default class Fileuploader extends Component {
 		})
 	}
 
-	handleUploadError = (error) => {
+	handleUploadError = () => {
 		this.setState({
 			isUploading: false
 		})
-		console.log(`some error ${error}`)
-
 	}
 
 	handleUploadSuccess = (filename) => {
+
+		console.log(filename)
+
 		this.setState({
-			isUploading: false,
-			name: filename
+			name: filename,
+			isUploading: false
 		});
-		firebase.storage()
-			.ref(this.props.dir)
-			.child(filename)
-			.getDownloadURL()
+
+		firebase.storage().ref(this.props.dir)
+			.child(filename).getDownloadURL()
 			.then(url => {
-				this.setState({
-					fileURL: url
-				});
-
+				this.setState({ fileURL: url })
 			})
+
+		this.props.filename(filename)
+
 	}
 
-	upLoadAgain = () => {
-		console.log('uploading')
-	}
+
 	static getDerivedStateFromProps(props, state) {
 		if (props.defaultImg) {
 			return state = {
@@ -55,6 +53,15 @@ export default class Fileuploader extends Component {
 		return null
 	}
 
+
+	uploadAgain = () => {
+		this.setState({
+			name: '',
+			isUploading: false,
+			fileURL: ''
+		});
+		this.props.resetImage();
+	}
 
 	render() {
 		return (
@@ -96,9 +103,8 @@ export default class Fileuploader extends Component {
 								}}
 								src={this.state.fileURL}
 								alt={`${this.state.name}`} />
-							<div className="remove"
-								onClick={this.upLoadAgain()} >
-								Remove	</div>
+							<div className="remove" onClick={() => this.uploadAgain()}>
+								Remove</div>
 
 						</div>
 						: null
