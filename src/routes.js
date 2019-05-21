@@ -24,7 +24,7 @@ const Routes = (props) => {
 					exact component={SignIn} path='/sign_in' />
 				<PublicRoutes
 					{...props}
-					// restricted={true}
+					restricted={false}
 					exact component={TheTeam} path='/the_team' />
 				<PrivateRoutes
 					{...props} exact

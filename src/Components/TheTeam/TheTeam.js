@@ -13,36 +13,34 @@ export default class TheTeam extends Component {
 		players: [],
 	}
 	componentDidMount() {
-		firebasePlayers.once('value').then(snapshot => {
-			const players = firebaseLooper(snapshot);
-			let promises = [];
-
-			for (let key in players) {
-				promises.push(
-					new Promise((resolve, reject) => {
-						firebase.storage().ref('players')
-							.child(players[key].image).getDownloadURL()
-							.then(url => {
-								players[key].url = url;
-								resolve();
-							})
+		firebasePlayers
+			.once('value')
+			.then(snapshot => {
+				const players = firebaseLooper(snapshot);
+				let promises = [];
+				console.log(players);
+				for (let key in players) {
+					promises.push(
+						new Promise((resolve, reject) => {
+							firebase.storage().ref('players')
+								.child(players[key].image).getDownloadURL()
+								.then(url => {
+									players[key].url = url;
+									resolve();
+								})
+						})
+					)
+				}
+				Promise.all(promises).then(() => {
+					this.setState({
+						loading: false,
+						players
 					})
-				)
-			}
-
-			Promise.all(promises).then(() => {
-				this.setState({
-					loading: false,
-					players
 				})
 			})
-
-
-
-		})
 	}
+
 	render() {
-		console.log(this.state.players)
 		return (
 			<div>
 				The Team
